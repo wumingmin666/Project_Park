@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace属性：用于指定当前映射文件和哪个接口进行映射，需要指定接口的文件路径，需要标注包的完整路径接口-->
+<mapper namespace="com.tjnu.project_park.mapper.OrderMapper">
+    <!--    自定义映射规则：resultMap标签来完成映射规则的定义-->
+    <!--    id属性：给这个映射负责分配一个唯一的id值，对应的就是resultMap='id属性的值‘属性的取值
+            type属性：取值是一个类，表示的是数据库中的查询结果与java中哪个实体类进行结果集映射
+    -->
+    <resultMap id="OrderEntityMap" type="com.tjnu.project_park.entity.Order">
+        <id column="id" property="id"></id>
+        <result column="created_time" property="createdTime"></result>
+        <result column="booking_user" property="bookingUser"></result>
+        <result column="booking_start_time" property="bookingStartTime"></result>
+        <result column="booking_end_time" property="bookingEndTime"></result>
+        <result column="park_id" property="parkId"></result>
+        <result column="plate_number" property="plateNumber"></result>
+        <result column="is_exist" property="isExist"></result>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            tbl_order (booking_user, booking_start_time,booking_end_time,park_id,pid,plate_number,created_time,is_exist)
+        VALUES
+        (#{bookingUser}, #{bookingStartTime}, #{bookingEndTime}, #{parkId},#{pid},#{plateNumber} ,#{createdTime}, #{isExist})
+    </insert>
+    <select id="findOrderByUsername" resultMap="OrderEntityMap">
+        SELECT * FROM tbl_order WHERE booking_user=#{username}
+    </select>
+
+</mapper>
