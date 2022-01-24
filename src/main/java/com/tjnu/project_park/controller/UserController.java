@@ -38,6 +38,7 @@ public class UserController extends BaseController{
      */
     @RequestMapping("/register")
     public JsonResult<Void> register(User user){
+        System.out.println("444444444");
         userService.register(user);
         return new JsonResult<>(OK);
     }
