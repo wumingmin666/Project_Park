@@ -14,5 +14,11 @@ public interface UserMapper {
      * @return 返回受影响的行数
      */
     public Integer insert(User user);
+
+    /**
+     * 通过用户名称查询用户的信息
+     * @param username 用户名称
+     * @return 返回查询到的用户信息映射为实体类
+     */
     public User findByUsername(String username);
 }

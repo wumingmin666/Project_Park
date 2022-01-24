@@ -1,7 +1,7 @@
 # 智慧停车-tjnu
 
 # 项目文档
-1.后端业务功能描述  
+### 一、后端业务功能简要描述  
 * 注册:
     >通过用户输入用户名(username)，密码(password)进行注册，前端判断用户名和密码的形式是否符号规范（如是否有空格，特殊符号等），后端判断用户名是否被占用
 * 登录：
@@ -41,51 +41,115 @@
     若是非预定的空车位则提示要求进行预定
 * 用户信息完善，支付等
     >在订单的表中添加价格字段
-* 其它（注释补充，文档编写，异常分析，变量逻辑规范等）
-    >
 
-2.前端页面  
-3.技术实现  
-* 注册：
-    >
-* 登录：
-    >
-* 地图制作
-* 选择地图
-* 获取华为云token
-* 获取车位信息
+### 二、前端页面（略）
 
-4.API使用参考
+### 三、技术实现
+#### 前提补充
+> 1. 环境配置
+>   * 服务器ip:122.112.227.127
+>   * mysql数据库名:dbpark
+>   * mysql数据库密码:123456
+>   * mysql数据库端口号:3306
+>   * redis:
+> 2. 工具类
+>   * 创建响应结果类
+>   * 控制层基类
+>   * JWTUtil类，生成和解析token
+#### 注册：
+>1. 创建数据库表
+>   * 表名：tbl_users
+>   * 表结构：
+>2. 创建用户实体类
+>   * 类名：User
+>3. 用户注册持久层
+>   * 规划SQL语句  
+>     插入语句
+>     ```sql 
+>     INSERT INTO
+>     tbl_users (username, password, phone, email, created_time, modified_time)
+>     VALUES
+>     (#{username}, #{password}, #{phone}, #{email}, #{createdTime}, #{modifiedTime})
+>     ```
+>     查询语句  
+>      ```sql
+>      SELECT * FROM tbl_users WHERE username=#{username}
+>      ```
+>   * 接口与抽象方法  
+>     - 接口:`UserMapper.java`  
+>     - 方法1:`public Integer insert(User user);`  
+>     - 方法2:`public User findByUsername(String username);`
+>   * 配置SQL映射
+>4. 用户注册业务层
+>   * 规划异常：
+>     - 插入异常：`InsertServiceException`
+>     - 用户已存在异常:`UsernameDuplicatedServiceException`
+>   * 创建接口抽象与方法
+>     - 接口：`UserService.java`
+>     - 方法：`public void register(User user);`
+>   * 实现类及抽象方法：
+>     - 查询用户名：从参数中获取用户名，并查询数据库中该用户是否存在，若存在则抛出用户名冲突异常
+>     - 密码加密：从参数中获取密码，并进行md5加密
+>     - 插入数据库：补充实体类信息（创建和修改时间），之后插入数据到数据库。
+>     - 异常处理：对用户名冲突和插入异常进行抛出处理
+> 5. 用户注册控制层
+>   * 处理异常：对业务层抛出的在基类进行统一处理异常。
+>   * 设计请求：
+>     - url: http://122.112.227.127:8080/user/register
+>     - 方法：get/post
+>     - 参数：username,password映射到实体类中
+>   * 处理请求：调用业务层register方法，传递参数为实体类User（包含username及password）,成功时返回状态码200
+#### 登录：
+>1. 用户登录持久层
+>   * 规划SQL语句
+>   - 查询语句 
+>      ```sql
+>      SELECT * FROM tbl_users WHERE username=#{username}
+>      ```
+>   * 接口与抽象方法
+>     - 接口:`UserMapper.java`
+>     - 方法:`public User findByUsername(String username);`
+>   * 配置SQL映射
+>2. 用户登录业务层
+>   * 规划异常
+>     - 用户不存在异常
+>     - 密码错误异常
+>   * 创建抽象方法
+>     - `public User login(String username,String password) 
+>   * 实现类及抽象方法
+>     - 查询用户：根据username参数查询用户是否存在，若不存在则抛出异常，存在返回用户信息
+>     - 密码加密：对参数password进行md5加密
+>     - 密码验证：将加密后的密码和查询得到的用户信息中得密码进行对比不同则抛出异常
+>     - 异常处理：对用户名不存在和密码错误进行异常处理
+>3. 用户登录控制层
+>   * 异常处理:对业务层抛出得异常在基类统一处理
+>   * 设计请求
+>      - url:http://122.112.227.127:8080/user/login
+>      - 方法: post 
+>      - 参数:username,password,location(用户的地理位置)
+>   * 处理请求
+>      - 判断用户是否存在且密码正确：调用业务层方法，返回用户信息实体类
+>      - 生成token并加入到返回参数：通过JWTUtil生成token
+>      - 添加地图信息:调用业务层parkService的findParkByDistance(location)方法以用户的位置为参数返回最近的几副地图 
+>4. 用户拦截器
+>   * 项目添加拦截器功能:
+>     - 添加白名单和黑名单：
+        
+#### 地图制作
+>1. 地图命名
+>2. 停车位命名及参数
+>3. 停车场的数据库表
+#### 选择地图
+#### 获取华为云token
+#### 获取车位信息
+#### 根据车位信息渲染地图
+#### 预定车位操作
+#### 路线规划与引导
+#### 反向寻车操作
+#### 当设备属性变化、判断车是否停入（是否为用户的车）
+#### 用户信息完善，支付等
 
-#### 软件架构
-软件架构说明
+### 四、API使用参考
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+### 五、软件架构
+> 软件架构说明

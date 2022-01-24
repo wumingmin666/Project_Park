@@ -12,8 +12,36 @@ public class User {
     private String password;
     private String phone;
     private String email;
+    private String salt;
     private Date createdTime;
     private Date modifiedTime;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", salt='" + salt + '\'' +
+                ", createdTime=" + createdTime +
+                ", modifiedTime=" + modifiedTime +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getUid(), user.getUid()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getSalt(), user.getSalt()) && Objects.equals(getCreatedTime(), user.getCreatedTime()) && Objects.equals(getModifiedTime(), user.getModifiedTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUid(), getUsername(), getPassword(), getPhone(), getEmail(), getSalt(), getCreatedTime(), getModifiedTime());
+    }
 
     public Integer getUid() {
         return uid;
@@ -55,12 +83,20 @@ public class User {
         this.email = email;
     }
 
-    public Date getCreateTime() {
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createdTime = createTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public Date getModifiedTime() {
@@ -69,31 +105,5 @@ public class User {
 
     public void setModifiedTime(Date modifiedTime) {
         this.modifiedTime = modifiedTime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return Objects.equals(getUid(), user.getUid()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(createdTime, user.createdTime) && Objects.equals(getModifiedTime(), user.getModifiedTime());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUid(), getUsername(), getPassword(), getPhone(), getEmail(), createdTime, getModifiedTime());
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid=" + uid +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", createTime=" + createdTime +
-                ", modifiedTime=" + modifiedTime +
-                '}';
     }
 }

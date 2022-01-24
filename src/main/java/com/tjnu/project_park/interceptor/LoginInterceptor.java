@@ -28,10 +28,13 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //Object obj=request.getParameter("access_token");
+        //获取请求头的参数token
         Object obj=request.getHeader("access_token");
+        //请求头不带token时
         if(obj==null){
             return false;
         }
+        //对token进行解析和验证
         JWTUtil jwtUtil=new JWTUtil();
         try {
             String username=jwtUtil.vaildToken((String) obj);
@@ -41,7 +44,6 @@ public class LoginInterceptor implements HandlerInterceptor {
                 //放行
                 return true;
             }
-
         }catch (ResultException e){
             e.printStackTrace();
             //重定向到登录页面
