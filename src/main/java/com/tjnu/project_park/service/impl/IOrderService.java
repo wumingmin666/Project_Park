@@ -5,6 +5,9 @@ import com.tjnu.project_park.mapper.DeviceToParkMapper;
 import com.tjnu.project_park.mapper.OrderMapper;
 import com.tjnu.project_park.service.OrderService;
 import com.tjnu.project_park.service.ParkService;
+import com.tjnu.project_park.service.ex.InsertServiceException;
+import com.tjnu.project_park.service.ex.OrderNotFoundServiceException;
+import com.tjnu.project_park.service.ex.UpdateStatueServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +26,21 @@ public class IOrderService implements OrderService {
     private DeviceToParkMapper deviceToParkMapper;
     @Autowired
     private OrderMapper orderMapper;
+
     //暂时返回ok,之后根据付费需求返回
     @Override
     public String booking(String parkName, Integer pid, String username, String plateName, String bookingStartTimeString, String bookingEndTimeString) {
         //1、修改车位状态为预定,之后需要添加更新失败的异常
         Integer parkId=Integer.valueOf(parkName);
-        deviceToParkMapper.updateStatueByParkId(parkId,pid);
+        try{
+            Integer row=deviceToParkMapper.updateStatueByParkId(parkId,pid);
+        }catch (RuntimeException e){
+            throw new UpdateStatueServiceException("更新状态异常");
+        }
+
+
         //2、添加订单
+        //补充订单实体类信息
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date bookingEndTime= null;
         Date bookingStartTime=null;
@@ -39,7 +50,6 @@ public class IOrderService implements OrderService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         Order order=new Order();
         order.setBookingEndTime(bookingEndTime);
         order.setBookingStartTime(new Date());
@@ -49,15 +59,24 @@ public class IOrderService implements OrderService {
         order.setIsExist(1);
         order.setParkId(parkId);
         order.setPlateNumber(plateName);
-        //之后添加异常
-        orderMapper.insert(order);
+        //插入并捕获异常抛出
+        try{
+            orderMapper.insert(order);
+        }catch (Exception e){
+            throw new InsertServiceException("插入异常");
+        }
+
         //3、根据需求返回信息
         return null;
     }
 
     @Override
     public HashMap myBooking(String username) {
+        //通过用户名查询订单
         Order myOrder=orderMapper.findOrderByUsername(username);
+        if(myOrder==null){
+            throw new OrderNotFoundServiceException("订单不存在异常");
+        }
         //1、判断订单是否过期存在，考虑通过时间或is_delete(暂时省略，之后写该步骤，还需添加异常)
         //2、获取Park_id和pid
         Integer parkId=myOrder.getParkId();

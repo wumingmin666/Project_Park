@@ -30,17 +30,17 @@ public class UserMapperTest {
         User user=new User();
         user.setUsername("wll");
         user.setPassword("wmm");
-        user.setCreateTime(new Date());
+        user.setCreatedTime(new Date());
         System.out.println(userMapper.insert(user));
     }
     @Test
     public void findByUsername(){
-//        User user=userMapper.findByUsername("wll");
-//        System.out.println(user);
-        String str="/tjnu01/ddd";
-        int first = str.indexOf("/");
-        int last = str.lastIndexOf("/");
-        String aa = str.substring(first+1, last);
-        System.out.println(aa);
+        User user=userMapper.findByUsername("pppp");
+        System.out.println(user);
+//        String str="/tjnu01/ddd";
+//        int first = str.indexOf("/");
+//        int last = str.lastIndexOf("/");
+//        String aa = str.substring(first+1, last);
+//        System.out.println(aa);
     }
 }

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 已测试通过
  * @param
  * @return
  */
@@ -65,6 +66,4 @@ public class UserController extends BaseController{
         //返回参数
         return new JsonResult<JSONObject>(OK,jsonObj);
     }
-
-
 }

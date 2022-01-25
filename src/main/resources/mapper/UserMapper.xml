@@ -15,9 +15,9 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="uid">
         INSERT INTO
-            tbl_users (username, password, phone, email, created_time, modified_time)
+            tbl_users (username, password, phone, email, created_time, modified_time,salt)
         VALUES
-        (#{username}, #{password}, #{phone}, #{email}, #{createdTime}, #{modifiedTime})
+        (#{username}, #{password}, #{phone}, #{email}, #{createdTime}, #{modifiedTime},#{salt})
     </insert>
     <select id="findByUsername" resultMap="UserEntityMap">
         SELECT * FROM tbl_users WHERE username=#{username}

@@ -30,6 +30,18 @@ public class BaseController {
         }else if(e instanceof PasswordErrorServiceException){
             result.setState(4003);
             result.setMessage("密码错误异常");
+        }else if(e instanceof ParkIdNotFountServiceException){
+            result.setState(4005);
+            result.setMessage("车位不存在异常");
+        }else if(e instanceof ParkNotFoundByPidServiceException){
+            result.setState(4006);
+            result.setMessage("停车场pid不存在异常");
+        }else if(e instanceof ParkNotFoundServiceException){
+            result.setState(4007);
+            result.setMessage("停车场不存在异常");
+        }else if(e instanceof UpdateStatueServiceException){
+            result.setState(4008);
+            result.setMessage("车位状态更新异常");
         }
         return result;
     }

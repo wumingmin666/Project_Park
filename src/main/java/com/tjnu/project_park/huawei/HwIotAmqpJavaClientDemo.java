@@ -158,7 +158,7 @@ public class HwIotAmqpJavaClientDemo {
         try {
             String body = message.getBody(String.class);
             String content = new String(body);
-            System.out.println("1111111");
+            System.out.println("接收的推送信息");
             System.out.println("receive an message, the content is " + content);
         } catch (Exception e) {
             System.out.println("processMessage occurs error: " + e.getMessage());

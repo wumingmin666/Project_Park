@@ -5,6 +5,7 @@ import com.tjnu.project_park.mapper.UserMapper;
 import com.tjnu.project_park.util.JWTUtil;
 import com.tjnu.project_park.util.ex.ResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,10 @@ import javax.servlet.http.HttpServletResponse;
  * @param
  * @return
  */
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
-    private UserMapper userMapper;
+    public UserMapper userMapper;
     /**
      * 检测全局session对象是否有uid数据，如果有则放行，如果没有重定向到登录页面
      * @param request 请求对象

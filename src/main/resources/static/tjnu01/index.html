@@ -52,7 +52,7 @@
         initializaton(1);
 
     });
-    地图元素点击返回事件
+    //地图元素点击返回事件
     map.on('mapClickNode', function (e) {
         console.log(e);
         if(e.nodeType==5){
@@ -128,7 +128,6 @@
     $('#btn2D').on('click', function () {
         map.viewMode = esmap.ESViewMode.MODE_2D;//2维模式
     });
-
     //3维模式
     $('#btn3D').on('click', function () {
         map.viewMode = esmap.ESViewMode.MODE_3D;; //3维模式

@@ -3,6 +3,8 @@ package com.tjnu.project_park.service.impl;
 import com.tjnu.project_park.entity.Park;
 import com.tjnu.project_park.mapper.ParkMapper;
 import com.tjnu.project_park.service.ParkService;
+import com.tjnu.project_park.service.ex.ParkNotFoundByPidServiceException;
+import com.tjnu.project_park.service.ex.ParkNotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,14 @@ import java.util.regex.Pattern;
 public class IParkService implements ParkService {
     @Autowired
     private ParkMapper parkMapper;
+
     @Override
     public HashMap<String,Park> findParkByDistance(String location) {
         List<Park> parkList=parkMapper.findAllPark();
+        //地图信息为空
+        if(parkList==null){
+            throw new ParkNotFoundServiceException("地图信息为空异常");
+        }
         //根据location计算距离最短的5个停车场
 //        HashMap<Park,Long> distances=null;
 //        for (Park park:parkList) {
@@ -42,6 +49,9 @@ public class IParkService implements ParkService {
     @Override
     public String getUrlByPid(Integer pid) {
         Park park=parkMapper.findParkByPid(pid);
+        if(park==null){
+            throw new ParkNotFoundByPidServiceException("通过Pid无法找到对应的地图");
+        }
         String url=park.getUrl();
         return url;
     }
