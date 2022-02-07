@@ -60,6 +60,7 @@ public class OrderController extends BaseController{
         //将所有参数传给业务层
         String result=orderService.booking(parkName,pid,username,plateNumber,bookingStartTimeString,bookingEndTimeString);
         //添加支付功能后对结果result进行处理
+
         return new JsonResult<>(OK);
     }
 
