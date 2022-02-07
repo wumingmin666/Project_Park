@@ -14,7 +14,8 @@
     <name>Project_Park</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
+        <skipTests>true</skipTests>
     </properties>
     <dependencies>
         <dependency>
