@@ -28,7 +28,7 @@ import java.util.HashMap;
  * @param
  * @return
  */
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController extends BaseController{
     @Autowired
@@ -46,59 +46,68 @@ public class OrderController extends BaseController{
      * @param httpServletRequest
      * @return
      */
-    @ResponseBody
     @RequestMapping("/booking")
-    public JsonResult<Void> booking(@RequestParam(value = "booking_start_time") String bookingStartTimeString,
-                                    @RequestParam(value = "booking_end_time") String bookingEndTimeString,
-                                    @RequestParam(value = "plate_number") String plateNumber,
-                                    @RequestParam(value = "name") String parkName, Integer pid, HttpServletRequest httpServletRequest) {
+    public JsonResult<String> booking(@RequestParam(value = "booking_start_time") String bookingStartTimeString, @RequestParam(value = "booking_end_time") String bookingEndTimeString, @RequestParam(value = "plate_number") String plateNumber, @RequestParam(value = "name") String parkName, Integer pid,@RequestParam(value = "price") String price, HttpServletRequest httpServletRequest) {
 
         //通过token获取username
         JWTUtil jwtUtil=new JWTUtil();
         Object token=httpServletRequest.getHeader("access_token");
         String username=jwtUtil.vaildToken((String) token);
+        //判断支付方式
+        String payMethod="App";
         //将所有参数传给业务层
-        String result=orderService.booking(parkName,pid,username,plateNumber,bookingStartTimeString,bookingEndTimeString);
+        String result=orderService.booking(parkName,pid,username,plateNumber,bookingStartTimeString,bookingEndTimeString,payMethod,price);
         //添加支付功能后对结果result进行处理
 
-        return new JsonResult<>(OK);
+//        httpResponse.setContentType("text/html;charset=" + "UTF-8");
+//        httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
+//        httpResponse.getWriter().flush();
+//        httpResponse.getWriter().close();
+        return new JsonResult<String>(OK,result);
     }
 
 
-    //已测试通过
-    /**
-     * 通过token获取用户名再通过用户名得到用户的订单地图信息，返回地图资源
-     * @param httpServletRequest 请求对象
-     * @return  返回地图视图资源文件
-     * @throws ServletException
-     * @throws IOException
-     */
-    @RequestMapping("/my_booking")
-    public ModelAndView myBooking(HttpServletRequest httpServletRequest) throws ServletException, IOException {
+    @RequestMapping("/my_book")
+    public JsonResult<JSONObject> myBook(HttpServletRequest httpServletRequest) throws ServletException, IOException {
         //解析token
         JWTUtil jwtUtil=new JWTUtil();
         Object token=httpServletRequest.getHeader("access_token");
         String username=jwtUtil.vaildToken((String) token);
+
         try {
             //根据用户名获取地图信息
             HashMap<String,Object> data=orderService.myBooking(username);
-            //创建视图模型
-            ModelAndView mav=new ModelAndView();
             Integer pid=(Integer) data.get("pid");
             String parkName=(String) data.get("parkName");
+
             //获取pid对应地图地址
             String url=parkService.getUrlByPid(pid);
-            int first = url.indexOf("/");
-            int last = url.lastIndexOf("/");
-            String map = url.substring(first+1, last);
-            //地图处理
-            mav.addObject("parkName",parkName);
-            mav.setViewName("map/"+map);
-            //返回视图
-            return mav;
+            String map = "map"+url;
+            HashMap<String,String> hashMap=new HashMap<>();
+            hashMap.put("url",map);
+            hashMap.put("parkId",parkName);
+            JSONObject jsonObject=new JSONObject(hashMap);
+            return new JsonResult<JSONObject>(OK,jsonObject);
         }catch (OrderNotFoundServiceException e){
             System.out.println("订单不存在异常");
         }
-        return null;
+        return new JsonResult<JSONObject>(50090,null);
+
+    }
+
+
+    /**
+     * 接收异步通知并处理
+     * @return
+     */
+    @RequestMapping("/sync_notice")
+    public String syncNotice(){
+        System.out.println("===异步通知====");
+        Boolean flag=true;
+        if(flag){
+            return "success";
+        }else {
+            return "failure";
+        }
     }
 }

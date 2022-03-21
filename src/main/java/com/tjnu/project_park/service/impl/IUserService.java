@@ -1,5 +1,6 @@
 package com.tjnu.project_park.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -8,6 +9,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.tjnu.project_park.entity.User;
+import com.tjnu.project_park.huawei.ex.GetTokenException;
 import com.tjnu.project_park.mapper.UserMapper;
 import com.tjnu.project_park.service.UserService;
 import com.tjnu.project_park.service.ex.InsertServiceException;
@@ -15,8 +17,13 @@ import com.tjnu.project_park.service.ex.PasswordErrorServiceException;
 import com.tjnu.project_park.service.ex.UsernameDuplicatedServiceException;
 import com.tjnu.project_park.service.ex.UsernameNotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.UUID;
@@ -28,7 +35,8 @@ import java.util.UUID;
 @Service
 public class IUserService implements UserService {
 
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private UserMapper userMapper;
@@ -83,6 +91,48 @@ public class IUserService implements UserService {
         return result;
     }
 
+    @Override
+    public User Wxlogin(String JSCODE) {
+        String APPID="wx6b408132c78e47f3";
+        String SECRET="d7f5a49b3f6ce0899e8530ad478e5533";
+        String url="https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+JSCODE+"&grant_type=authorization_code";
+        //向微信服务器获取session和openid
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
+        String body = responseEntity.getBody();
+        JSONObject bodyJson=JSONObject.parseObject(body);
+        String session=(String) bodyJson.get("session_key");
+        String openid=(String) bodyJson.get("openid");
+
+        //将session和openid进行存储，openid为键
+
+
+        //先判断用户是否存在，若存在则生成token,不存在则自动进行注册
+        //查找User表，查看该openid对应用户是否存在，如是则返回uid，否则生成新用户，返回uid
+        String username=openid;
+        User result=userMapper.findByUsername(username);
+        //用户不存在
+        if(result==null) {
+            //进行注册
+            User user = new User();
+            user.setUsername(openid);
+            //密码加密处理的实现：md5算法
+            String oldPassword = openid;
+            String salt = UUID.randomUUID().toString().toUpperCase();
+            user.setSalt(salt);
+            String md5Password = getMD5Password(oldPassword, salt);
+            user.setPassword(md5Password);
+            //补充实体类信息：创建时间
+            user.setCreatedTime(new Date());
+            user.setModifiedTime(new Date());
+            //插入数据库
+            Integer rows = userMapper.insert(user);
+            if (rows != 1) {
+                throw new InsertServiceException("插入用户信息异常");
+            }
+            return user;
+        }
+        return result;
+    }
 
 
     /**

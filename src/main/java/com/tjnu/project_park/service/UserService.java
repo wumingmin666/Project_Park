@@ -21,4 +21,11 @@ public interface UserService {
      * @return 当密码和用户名正确时方法返回对应的用户信息实体类
      */
     public User login(String username,String password);
+
+    /**
+     * 微信授权登录
+     * @param code
+     * @return 返回token
+     */
+    public User Wxlogin(String code);
 }

@@ -19,11 +19,13 @@
         height: 100%;
     }
 </style>
-
 </head>
 <body>
+
     <div id="map-container"></div>
 </body>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script type="text/javascript" src="https://gitee.com/dcloud/uni-app/raw/master/dist/uni.webview.1.5.2.js"></script>
 <script type="text/javascript">
     var map = null;
     var defaultOpt = {
@@ -73,6 +75,12 @@
                         if (r==true){
                             //进入到预约信息填写及付款界面
                             //同时传递name，pid值到对应页面
+                            uni.redirectTo({
+                                url: '/pages/order/order?name='+name+'&pid='+pid,
+                                success:function(){
+                                    console.log("成功")
+                                }
+                            });
                         }
                     }else if(res.data==1){//车位有车
                         alert("车位已经有车")

@@ -5,8 +5,8 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <title>tjnu01号停车场</title>
-    <script src="../lib/esmap-1.6.min.js"></script>
-    <script src="../lib/jquery-3.6.0.js"></script>
+    <script src="../../../lib/esmap-1.6.min.js"></script>
+    <script src="../../../lib/jquery-3.6.0.js"></script>
     <style type="text/css">
     html,body{
         padding: 0;
@@ -19,25 +19,39 @@
         height: 100%;
     }
 </style>
-
 </head>
 <body>
     <div id="map-container"></div>
 </body>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script type="text/javascript" src="https://gitee.com/dcloud/uni-app/raw/master/dist/uni.webview.1.5.2.js"></script>
+<script>
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+    function initializaton(id){
+        map.changeModelColor({name:id,color:"#FF0000"});
+    }
+</script>
 <script type="text/javascript">
-    //变量声明及默认参数
     var map = null;
     var defaultOpt = {
-        mapDataUrl:'/tjnu01/data',
-        mapThemeUrl:'/tjnu01/data/theme',
+        mapDataUrl:'data',
+        mapThemeUrl:'data/theme',
     };
     var mapCoord = null;
     var navi;
     var h;
     var container=document.getElementById('map-container');
-    //地图渲染和配置
     map = new esmap.ESMap({
-        container: container, //渲染dom
+        container: document.getElementById('map-container'), //渲染dom
         mapDataSrc: defaultOpt.mapDataUrl,
         mapThemeSrc: defaultOpt.mapThemeUrl,
         focusAlphaMode: false, //对不可见图层启用透明设置 默认为true
@@ -47,13 +61,16 @@
         moveToAnimateMode: true, //开启moveTo动画效果
         token:'tjnu04'
     });
+
     map.showCompass = true;//指北针
     map.openMapById('tjnu04');//项目绑定的地图不能修改
+
     //地图相关操作 必须在地图加载完成事件中执行
     map.on('loadComplete', function () {//地图加载完成事件
         console.log('ESMap地图加载完成! 后续业务代码在此函数内添加。');
         //添加业务逻辑
-        initial();
+        let id=getQueryVariable("id")
+        initializaton(id);
         createNavi();
     });
     // 点击计数
@@ -61,6 +78,7 @@
     //判断起点是否是同一处坐标
     var lastCoord = null;
     var curfnum = null;
+    //地图元素点击返回事件
     //点击地图事件。开始选点开始后，点击地图一次为起点，第二次点击为终点
     map.on('mapClickNode', function (event) {
         //console.log(event);
@@ -72,6 +90,7 @@
         if (event.nodeType == 5) {
             curfnum = event.FloorNum;
             h=event.RoomHigh
+
             mapCoord = event.hitCoord;
         }
     })
@@ -162,12 +181,6 @@
             navi.clearAll();
     }
 </script>
-<script type="text/javascript" th:inline="javascript">
-    function initial(){
-        let name=[[${parkName}]];
-        map.changeModelColor({name:name,color:"#FF0000"});
-    }
-</script>
 <script type="text/javascript">
     //js工具函数
     function getQueryString(name) {
@@ -176,12 +189,10 @@
         if (r != null) return unescape(r[2]);
         return null;
     }
-
     //2维模式
     $('#btn2D').on('click', function () {
         map.viewMode = esmap.ESViewMode.MODE_2D;//2维模式
     });
-
     //3维模式
     $('#btn3D').on('click', function () {
         map.viewMode = esmap.ESViewMode.MODE_3D;; //3维模式

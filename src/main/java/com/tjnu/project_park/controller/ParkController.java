@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -21,9 +22,12 @@ public class ParkController extends BaseController{
     private ParkService parkService;
 
     @RequestMapping("/park_descride")
-    public JsonResult<JSONObject> parkDescride(String location){
-        //HashMap<Park,Long> result=parkService.findParkByDistance(location);
-        return null;
+    public JsonResult<Object> parkDescride(String longitude,String latitude){
+        HashMap<String,Park> result=parkService.findParkByDistance(longitude,latitude);
+        Object parkArray[]=result.values().toArray();
+        System.out.println(parkArray[0]);
+        System.out.println(parkArray[1]);
+        return new JsonResult<Object>(OK,parkArray);
     }
 
 

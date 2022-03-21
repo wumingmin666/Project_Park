@@ -27,10 +27,11 @@ public class OrderMapperTest {
         order.setBookingStartTime(new Date());
         order.setCreatedTime(new Date());
         order.setPid(1);
-        order.setBookingUser("whh");
+        order.setBookingUser("xiaolll");
         order.setIsExist(1);
         order.setParkId(1);
         order.setPlateNumber("HD123546");
+        order.setOutTradeNo("1589562");
         Integer row=orderMapper.insert(order);
         System.out.println(row);
     }

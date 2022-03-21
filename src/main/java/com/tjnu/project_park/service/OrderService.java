@@ -18,7 +18,7 @@ public interface OrderService {
      * @param bookingEndTimeString
      * @return 暂时返回null
      */
-    public String booking(String parkName, Integer pid, String username, String plateName, String bookingStartTimeString,String bookingEndTimeString);
+    public String booking(String parkName, Integer pid, String username, String plateName, String bookingStartTimeString,String bookingEndTimeString,String payMethod,String price);
 
     /**
      * 获取订单有关信息（地图界面）

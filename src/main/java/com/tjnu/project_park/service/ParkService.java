@@ -12,10 +12,10 @@ import java.util.List;
 public interface ParkService {
     /**
      * 根据传入的位置信息获取距离该位置最近的几个地图
-     * @param location 用户的位置信息
+     * @param  longitude,latitude用户的位置信息经纬度
      * @return 返回地图实体类的集合
      */
-    public HashMap<String,Park> findParkByDistance(String location);
+    public HashMap<String,Park> findParkByDistance(String longitude,String latitude);
 
     /**
      * 根据地图的pid获取地图的url

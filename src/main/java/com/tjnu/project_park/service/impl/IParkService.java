@@ -23,7 +23,7 @@ public class IParkService implements ParkService {
     private ParkMapper parkMapper;
 
     @Override
-    public HashMap<String,Park> findParkByDistance(String location) {
+    public HashMap<String,Park> findParkByDistance(String longitude,String latitude) {
         List<Park> parkList=parkMapper.findAllPark();
         //地图信息为空
         if(parkList==null){

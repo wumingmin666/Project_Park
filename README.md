@@ -361,11 +361,24 @@
 >7. 响应示例：
 > ![](.README_images/bab06214.png)
 #### 预定车位及支付（暂未完成：https://opendocs.alipay.com/open/204/105297）
->1. 接口说明：
->2. 调试
->3. URL
+>1. 接口说明：请求服务端获取签名后的订单信息。
+>2. 调试:使用app
+>3. URL:
+>     - url:http://122.112.227.127:8080/order/booking
+>     - 请求方法：POST
+>     - HTTP
 >4. 请求参数
->5. 响应参数
+> >| 名称 | 必选/可选 | 类型 | 位置 | 说明|
+> >| --- |   ----- | ---- | --- | ---|
+> >|booking_start_time(bookingStartTimeString)|必选|String|Body|预定的起始时间|
+> >|booking_end_time(bookingEndTimeString)|必选|String|Body|预定的结束时间|
+> >|plate_number(plateNumber)|必选|String|Body|预定车辆的车牌号|
+> >|name(parkName)|必选|String|Body|预定的车位name(id)|
+> >|pid|必选|Integer|Body|预定的停车场id|
+> >|access_token|必选|String|Header|参数说明：用户登入时保存的token|
+>5. 响应参数:为订单信息，app 支付请求参数字符串，主要包含商户的订单信息，key=value 形式，以&连接。
+>      <div style="height:25px;width:600px;overflow-y:auto;overflow-x:auto;background:#EEEEEE;">例如：<code>app_id=2015052600090779&biz_content=%7B%22timeout_express%22%3A%2230m%22%2C%22seller_id%22%3A%22%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A%220.02%22%2C%22subject%22%3A%221%22%2C%22body%22%3A%22%E6%88%91%E6%98%AF%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%22%2C%22out_trade_no%22%3A%22314VYGIAGG7ZOYY%22%7D&charset=utf-8&method=alipay.trade.app.pay&sign_type=RSA2&timestamp=2016-08-15%2012%3A12%3A15&version=1.0&sign=MsbylYkCzlfYLy9PeRwUUIg9nZPeN9SfXPNavUCroGKR5Kqvx0nEnd3eRmKxJuthNUx4ERCXe552EV9PfwexqW%2B1wbKOdYtDIb4%2B7PL3Pc94RZL0zKaWcaY3tSL89%2FuAVUsQuFqEJdhIukuKygrXucvejOUgTCfoUdwTi7z%2BZzQ%3D</code></div>
+>     详细信息见：https://opendocs.alipay.com/open/204/105296
 >6. 请求示例
 >7. 错误码
 #### 订单地图界面（导航）

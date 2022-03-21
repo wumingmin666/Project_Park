@@ -17,6 +17,7 @@ public class Order {
     private String plateNumber;
     private Date createdTime;
     private Integer isExist;
+    private String outTradeNo;
 
     @Override
     public String toString() {
@@ -30,6 +31,7 @@ public class Order {
                 ", plateNumber='" + plateNumber + '\'' +
                 ", createdTime=" + createdTime +
                 ", isExist=" + isExist +
+                ", outTradeNo='" + outTradeNo + '\'' +
                 '}';
     }
 
@@ -38,12 +40,12 @@ public class Order {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return Objects.equals(getId(), order.getId()) && Objects.equals(getBookingUser(), order.getBookingUser()) && Objects.equals(getBookingStartTime(), order.getBookingStartTime()) && Objects.equals(getBookingEndTime(), order.getBookingEndTime()) && Objects.equals(getParkId(), order.getParkId()) && Objects.equals(getPid(), order.getPid()) && Objects.equals(getPlateNumber(), order.getPlateNumber()) && Objects.equals(getCreatedTime(), order.getCreatedTime()) && Objects.equals(getIsExist(), order.getIsExist());
+        return Objects.equals(getId(), order.getId()) && Objects.equals(getBookingUser(), order.getBookingUser()) && Objects.equals(getBookingStartTime(), order.getBookingStartTime()) && Objects.equals(getBookingEndTime(), order.getBookingEndTime()) && Objects.equals(getParkId(), order.getParkId()) && Objects.equals(getPid(), order.getPid()) && Objects.equals(getPlateNumber(), order.getPlateNumber()) && Objects.equals(getCreatedTime(), order.getCreatedTime()) && Objects.equals(getIsExist(), order.getIsExist()) && Objects.equals(outTradeNo, order.outTradeNo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getBookingUser(), getBookingStartTime(), getBookingEndTime(), getParkId(), getPid(), getPlateNumber(), getCreatedTime(), getIsExist());
+        return Objects.hash(getId(), getBookingUser(), getBookingStartTime(), getBookingEndTime(), getParkId(), getPid(), getPlateNumber(), getCreatedTime(), getIsExist(), outTradeNo);
     }
 
     public Integer getId() {
@@ -116,5 +118,13 @@ public class Order {
 
     public void setIsExist(Integer isExist) {
         this.isExist = isExist;
+    }
+
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
+
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
     }
 }

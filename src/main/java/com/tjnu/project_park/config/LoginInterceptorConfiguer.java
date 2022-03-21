@@ -28,7 +28,11 @@ public class LoginInterceptorConfiguer implements WebMvcConfigurer {
         List<String> patterns=new ArrayList<>();
         patterns.add("/user/register");
         patterns.add("/user/login");
+        patterns.add("/user/wxlogin");
         patterns.add("/device_to_park/**");
+        patterns.add("/park/park_descride");
+        patterns.add("/order/**");
+        patterns.add("/map/**");
         //patterns.add("/order/**");
 
 //        patterns.add("/tjnu01/data/**");
@@ -40,7 +44,6 @@ public class LoginInterceptorConfiguer implements WebMvcConfigurer {
         patterns.add("/lib/**");
         patterns.add("/tjnu01/**");
         patterns.add("/tjnu02/**");
-
         
 
 

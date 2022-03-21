@@ -17,7 +17,7 @@ public class OrderServiceTest {
     private OrderService orderService;
     @Test
     public void booking(){
-        orderService.booking("12",1,"whh","HS4562","2022-01-17 16:30:51","2022-01-18 15:30:51");
+        orderService.booking("12",1,"whh","HS4562","2022-01-17 16:30:51","2022-01-18 15:30:51","H5","156");
     }
     @Test
     public void myBooking(){

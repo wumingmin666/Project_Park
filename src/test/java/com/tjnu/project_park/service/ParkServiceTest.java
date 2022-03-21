@@ -23,7 +23,7 @@ public class ParkServiceTest {
     private ParkService parkService;
     @Test
     public void fun1(){
-        HashMap<String, Park> re=parkService.findParkByDistance("15");
+        HashMap<String, Park> re=parkService.findParkByDistance("15","13");
         System.out.println(re);
     }
 }

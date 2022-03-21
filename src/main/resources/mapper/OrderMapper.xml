@@ -20,9 +20,9 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            tbl_order (booking_user, booking_start_time,booking_end_time,park_id,pid,plate_number,created_time,is_exist)
+            tbl_order (booking_user, booking_start_time,booking_end_time,park_id,pid,plate_number,created_time,is_exist,out_trade_no)
         VALUES
-        (#{bookingUser}, #{bookingStartTime}, #{bookingEndTime}, #{parkId},#{pid},#{plateNumber} ,#{createdTime}, #{isExist})
+        (#{bookingUser}, #{bookingStartTime}, #{bookingEndTime}, #{parkId},#{pid},#{plateNumber} ,#{createdTime}, #{isExist},#{outTradeNo})
     </insert>
     <select id="findOrderByUsername" resultMap="OrderEntityMap">
         SELECT * FROM tbl_order WHERE booking_user=#{username}

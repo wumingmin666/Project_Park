@@ -48,19 +48,36 @@ public class UserController extends BaseController{
      * @return 返回token,及用户相关的车位及地图信息
      */
     @RequestMapping("/login")
-    public JsonResult<JSONObject> login(String username,String password, String location){
+    public JsonResult<JSONObject> login(String username,String password, String longitude,String latitude){
         //判断用户是否存在及密码是否正确
         User user=userService.login(username,password);
+        System.out.println("1111111111111111111");
         //用户存在且密码正确，生成token
         String token=new JWTUtil().createJWT(user.getUsername());
         //将token放入返回的参数中
         HashMap<String,String> json=new HashMap<>();
         json.put("access_token",token);
         //添加地图信息
-        HashMap<String,Park> parks=parkService.findParkByDistance(location);
+        HashMap<String,Park> parks=parkService.findParkByDistance(longitude,latitude);
         String parksJson = new JSONObject(parks).toJSONString();
         json.put("parks",parksJson);
 
+        //转为json格式
+        JSONObject jsonObj = new JSONObject(json);
+        //返回参数
+        return new JsonResult<JSONObject>(OK,jsonObj);
+    }
+
+    /**
+     * 使用微信登录
+     */
+    @RequestMapping("/wxlogin")
+    public JsonResult<JSONObject> WxLogin(String code, String userInfo){
+        String username=userInfo;
+        User user=userService.Wxlogin(code);
+        String token=new JWTUtil().createJWT(user.getUsername());
+        HashMap<String,String> json=new HashMap<>();
+        json.put("access_token",token);
         //转为json格式
         JSONObject jsonObj = new JSONObject(json);
         //返回参数
