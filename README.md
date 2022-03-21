@@ -293,7 +293,7 @@
 >1. 接口说明:客户端可调用该接口完成用户的注册功能
 >2. 调试：可在postman中进行调试
 >3. URL:
->    - url:http://122.112.227.127:8080/user/register?username={username}&password={password}
+>    - url:http://39.105.152.242:8081/user/register?username={username}&password={password}
 >    - 请求方法：GET
 >    - 传输协议：http
 >4. 请求参数
