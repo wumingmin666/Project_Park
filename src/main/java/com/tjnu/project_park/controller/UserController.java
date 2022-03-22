@@ -51,7 +51,6 @@ public class UserController extends BaseController{
     public JsonResult<JSONObject> login(String username,String password, String longitude,String latitude){
         //判断用户是否存在及密码是否正确
         User user=userService.login(username,password);
-        System.out.println("1111111111111111111");
         //用户存在且密码正确，生成token
         String token=new JWTUtil().createJWT(user.getUsername());
         //将token放入返回的参数中
