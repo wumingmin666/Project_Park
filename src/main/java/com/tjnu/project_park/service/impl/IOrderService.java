@@ -56,22 +56,22 @@ public class IOrderService implements OrderService {
         //Long timeLength=bookingEndTime.getTime()-bookingStartTime.getTime();
     //订单处理
         //一、支付
-        //1、参数处理
+        //1、参数处理（前4个参数，如果正式上线需改）。
         //appId
         String APP_ID="2021000119611386";
         //应用私钥
         String APP_PRIVATE_KEY="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCCJ+4D1VNtwd0IXOwxVkwWmTTN8Yf8EkpzL682XkyTk3ceQohdI0ecfs4V/17mGR2K6rDC3blHcXA3jidFM/1mqyM31cSpUzA5YV8JEmKLZvjhCJ6S6dFPixHzkUSQhgy9tP2HLrv9Baz+DbnElDWOcz/MXScp6MuR3zG49OLjvMzveL4/ECVZQ3H8cMwUZpUd4oyuAhnKUv/hmYBuOpgH88PzM8vEFzUTzxSAqRROztOU0RLTXga51ONpFkdgVvstMZmixQOnwuBe8956ow3rVOQP+vm6PdC0q7ASjxGhSySWWpEQikBuGIw+beun9Q/nKJRwX0dxCzatM6nGvzXlAgMBAAECggEAJmvHFRaaBCJgLyHPD1lcKKedMNYFwGFd3NbMsA3yKPY1CZe2TVgmwYmlKFU0HFR5phJVj5CIKxDPgXbTHNiWCwKl6MuPvDQ0XhviQ/lLYb9J5JP4y4F+Ki7xY6cUSF1p0W5mEMu47p4ITQ6cMe1WSfC3eopdD0ALJ8ptER4pA/TBMYc3EIrcrlhDFciC+gMQSxMHpRO9tD0ADUfbB9L39VpXwAWEM51jb3LRwfkdD70vO2YvxHI2NOUutyVZJoziuwxxWOaKO7c+i4XwATexDE4mFzIsM6Pgy4UwWctfI0qNZq5pIJLeR3xhMToqoJDRDc5zeSqISKdZN7liVMXUAQKBgQDOHyN7grPs97dqv2rtmfZlMSF4Yb5tlZYXPfan9XWI0CHTihIcnGDIJN3CCECdXCvbUNzRxC/gOzg8RW71uqMV3YJiRp1oBjVFqYd7mMZbzqAn/Tj9vPwcnUM6JBRTcy72hiacXve7xpeFTpyklHoXGCU8cO28DwP8DTDTYmiqgQKBgQChpts4hfmKfL2vWJrwTx0ieoMPsQa9K61sMfEgTZrMC2g4vGAB3v21n2/qsF7zKkpFdRTlo62Snh0lzGVxTR9a2FYaGRD90Hu101lxedSeytvsubK4xQQ+uarxidySvdkN8cUsk1lQq+o+oA8n3RntocpLOFgXjfc4GL0FXbFxZQKBgQC4gIj7WsCBoi8tP1CQhFtYswS5xAx3/QkPnuh16bKel2df+lxB/fxnyxAxSb/E26dqNlSi89DDD19EHAa5sKmgvdmi7ICjh8MRqzFaAiO0NB2KDhGAlzS4zFBL79W96QGlq+lN2Xg5PgeNTRPMAhfTKkrScmdrCanQaWJGJPV5gQKBgB6H/zurwjfv23u0xn7A0oXikcJy8wzjpPucayhov+Xt+Z9NpOx1i4G0PVUcPrK6uBBqTqoYwf3BM0wiUL6XjGaCGbEQLu9hYxwycOBH3GqpceRCJolTXLvkIW9BVJG6nbZOhakno2TjM3jkjjg/QFhriGOwnqLEQ38q3PiYe50pAoGABnwn7JmPUQDJOSGZdE6oh03AccVM/2X6TfUnH/dKGUTGmcKJ3PFFawdE+ElSLyyK19o1IsYJpT90LY/AjebPlqWHAAsfPwkH9GsUQQ4t8rE0iRH2xI3j9CMNMr7ByoiLsku6x0G8Z89FkL4One+7RwSOx8hzg/nFOXnwnriNqUY=";
         //支付宝公钥
         String ALIPAY_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiTffq83rZxA+0BaaBOsWps1bVnAXf1/yhDWrKyeXa76TcjJ4aNpkrk+ILNlbn6f7VNVp8T3CzFhvNRaMI522VedsxCXoHmXqlGYR75BQZWB7q11hSa3x8gJEFfFBwMS0vy6m8UAymTRaeTsvvfezOkJMAMkzp8wzJHjxISenoRgHCPkMbQVGyEDyfesTs0wpv1t+J+iTgbLpdPuFgzpa7xkocrjwUoQ/HLWzZmNCOlNcmQK8JvJGnpZ+PBPlBP8fjYUKVpaDo+wj7yL4Bs+POM8K+RAKO9cF7Sn2GUYo80wxGTSw0UKAISRRa42tzX+wJ5QbRe+a9hw128kKpK2O6wIDAQAB";
+        //支付宝服务端网关
+        String serverUrl="https://openapi.alipaydev.com/gateway.do";
         //商户网站唯一订单号由车牌号（plateName）加UUID构成
         String outTradeNo=plateName+UUID.randomUUID().toString().replace("-","");;
-        //支付金额,每小时5元
-        //String totalAmount=String.valueOf((timeLength/3600)*5);
+        //支付金额,每小时5.5元
+        //String totalAmount=String.valueOf((timeLength/3600)*5.5);
         String totalAmount=price;
         //商品的标题/交易标题/订单标题/订单关键字等
         String subject="预定车位";
-        //支付宝服务端网关
-        String serverUrl="https://openapi.alipaydev.com/gateway.do";
         //支付宝服务器主动通知商户服务器里指定的页面http/https路径。
         String notifyUrl="http://39.105.152.242:8081/order/sync_notice";
         //创建alipayClient
